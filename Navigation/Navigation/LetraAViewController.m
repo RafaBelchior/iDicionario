@@ -7,42 +7,40 @@
 //
 
 #import "LetraAViewController.h"
-#import "LetraBViewController.h"
 
 @implementation LetraAViewController
-
-
+@synthesize elemento, ib, abc;
 
 -(void) viewDidLoad {
     [super viewDidLoad];
-    self.title = @"A";
-    UIBarButtonItem *next = [[UIBarButtonItem alloc]
-                             initWithBarButtonSystemItem:UIBarButtonSystemItemFastForward target:self action:@selector(next:)];
-    self.navigationItem.rightBarButtonItem=next;
+    NSUInteger viewControllerCount = self.navigationController.viewControllers.count;
+    ib = viewControllerCount;
     
-    UIButton *botao = [UIButton
-                                        buttonWithType:UIButtonTypeSystem];
-    [botao
-     setTitle:@"Mostre uma palavra, uma figura e leia a palavra ao apertar um botao"
-     forState:UIControlStateNormal];
-    [botao sizeToFit];
-    botao.center = self.view.center;
+    abc = [Alfabeto instance];
+    abc = [abc initWithLetras];
+    self.title = abc.titles[viewControllerCount-2];
     
-    [self.view addSubview:botao];
+    if (viewControllerCount > 26) {
+        
+    }else{
+        UIBarButtonItem *next = [[UIBarButtonItem alloc] initWithBarButtonSystemItem: UIBarButtonSystemItemFastForward target:self action:@selector(next:)];
+        self.navigationItem.rightBarButtonItem = next;
+    }
     
- 
+    //    UIButton *botao = [UIButton buttonWithType:UIButtonTypeSystem];
+    //    [botao setTitle:@"Mostre uma palavra, uma figura e leia a palavra ao apertar um botao" forState:UIControlStateNormal];
+    //    [botao sizeToFit];
+    //    botao.center = self.view.center;
+    
+    //    [self.view addSubview:botao];
+    
+    
 }
 
 -(void)next:(id)sender {
-    LetraBViewController *proximo = [[LetraBViewController alloc]
-                                              initWithNibName:nil
-                                            bundle:NULL];
-    [self.navigationController pushViewController:proximo
-                                         animated:YES];
-    
+    LetraAViewController *proximo = [[LetraAViewController alloc] initWithNibName:nil bundle:NULL];
+    [self.navigationController pushViewController:proximo animated:YES];
 }
-
-
 
 
 @end

@@ -7,7 +7,12 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "Alfabeto.h"
 
 @interface LetraAViewController : UIViewController
+
+@property Alfabeto *abc;
+@property NSInteger ib;
+@property NSInteger elemento;
 
 @end
