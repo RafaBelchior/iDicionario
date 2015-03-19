@@ -10,9 +10,8 @@
 
 @interface Alfabeto : NSObject
 
-@property NSArray *titles;
-@property NSArray *numeros;
-@property int ia;
+@property NSArray *letras;
+@property NSArray *palavras;
 
 +(Alfabeto *) instance;
 -(id) initWithLetras;

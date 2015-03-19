@@ -7,26 +7,18 @@
 //
 
 #import "MackenzieAppDelegate.h"
-#import "LetraAViewController.h"
-#import "ViewController.h"
+#import "AlfabetoViewController.h"
 
 @implementation MackenzieAppDelegate
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
-    ViewController *viewController = [[ViewController alloc]
-                                      initWithNibName:nil
-                                      bundle:nil];
+    AlfabetoViewController *aVC = [[AlfabetoViewController alloc] init];
     
+    self.navigationController = [[UINavigationController alloc] initWithRootViewController:aVC];
     
-    self.navigationController = [[UINavigationController alloc]
-                                 initWithRootViewController:viewController];
-    self.window = [[UIWindow alloc]
-                   initWithFrame:[[UIScreen mainScreen] bounds]];
+    self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     self.window.rootViewController = self.navigationController;
-
-
-    
     self.window.backgroundColor = [UIColor whiteColor];
     [self.window makeKeyAndVisible];
     
