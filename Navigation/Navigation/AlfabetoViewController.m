@@ -46,12 +46,21 @@ static int contador=0;
     self.imagem.hidden = true;
 }
 
--(void)viewWillAppear:(BOOL)animated {
+-(void) viewWillAppear:(BOOL)animated {
     self.label.text = abc.palavras[contador];
     self.label.hidden = false;
-    self.imagem.hidden = false;
+
 }
 
+-(void) viewDidAppear:(BOOL)animated{
+    [UIView animateWithDuration:1 animations:^{
+        [imagem setAlpha:0];
+    } completion:^(BOOL finished) {
+        [UIView animateWithDuration:1 animations:^{
+            [imagem setAlpha:1];
+        } completion:nil];
+    }];
+}
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
