@@ -24,7 +24,7 @@ static Alfabeto *instance = nil;
     letras = [[NSMutableArray alloc] init];
     letras = [NSMutableArray arrayWithObjects:@"A",@"B", @"C", @"D", @"E",@"F",@"G",@"H",@"I",@"J",@"K",@"L",@"M",@"N",@"O",@"P",@"Q",@"R",@"S",@"T",@"U",@"V",@"X",@"W",@"Y",@"Z",nil];
     palavras = [[NSMutableArray alloc] init];
-    palavras = [NSMutableArray arrayWithObjects:@"Abc",@"Bbc", @"Cbc", @"Dbc", @"Ebc",@"Fbc",@"Gbc",@"Hbc",@"Ibc",@"Jbc",@"Kbc",@"Lbc",@"Mbc",@"Nbc",@"Obc",@"Pbc",@"Qbc",@"Rbc",@"Sbc",@"Tbc",@"Ubc",@"Vbc",@"Xbc",@"Wbc",@"Ybc",@"Zbc",nil];
+    palavras = [NSMutableArray arrayWithObjects:@"Abacaxi",@"Brasil", @"Cachorro", @"Dado", @"Escada",@"Foca",@"Gato",@"Helicóptero",@"Imã",@"Jacaré",@"Kaboom",@"Luva",@"Macaco",@"Navio",@"Ovelha",@"Palmeiras",@"Quarto",@"Rato",@"Sal",@"Tangerina",@"Uva",@"Verde",@"Xampú",@"WWDC",@"Yogurt",@"Zebra",nil];
     return self;
 }
 

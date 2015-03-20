@@ -32,12 +32,13 @@ static int contador=0;
     UIBarButtonItem *previous = [[UIBarButtonItem alloc] initWithBarButtonSystemItem: UIBarButtonSystemItemRewind target:self action:@selector(previous:)];
     self.navigationItem.leftBarButtonItem = previous;
     
-    self.label = [[UILabel alloc] initWithFrame:CGRectMake(100, self.view.center.y, 200, 40)];
+    self.label = [[UILabel alloc] initWithFrame:CGRectMake(100, self.view.center.y-130, self.view.bounds.size.width, 80)];
     self.label.text = abc.palavras[contador];
     [self.view addSubview:self.label];
     
-    self.imagem = [[UIImageView alloc] initWithFrame:CGRectMake(100,self.view.center.y+100, 200, 200)];
+    self.imagem = [[UIImageView alloc] initWithFrame:CGRectMake(0,self.view.center.y-70, self.view.bounds.size.width, 250)];
     self.imagem.image = [UIImage imageNamed:@"alpha.png"];
+    self.imagem.backgroundColor = [UIColor blueColor];
     [self.view addSubview:self.imagem];
     
     UIToolbar *toolBar = [[UIToolbar alloc] initWithFrame:CGRectMake(0, 60, self.view.bounds.size.width, 50)];
@@ -52,7 +53,7 @@ static int contador=0;
     textField.clearButtonMode = UITextFieldViewModeWhileEditing;
     
     UIBarButtonItem *textFieldBarButton = [[UIBarButtonItem alloc] initWithCustomView:textField];
-    UIBarButtonItem *buttonBarButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem: UIBarButtonSystemItemSave target:self action:@selector(trocarPalavra)];
+    UIBarButtonItem *buttonBarButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem: UIBarButtonSystemItemEdit target:self action:@selector(trocarPalavra)];
     [toolBar setItems:@[textFieldBarButton, buttonBarButton]];
 }
 
@@ -101,7 +102,6 @@ static int contador=0;
 
     }
     [self.navigationController pushViewController:proximo animated:YES];
-//    NSLog(@"%lu %d",[self.navigationController.viewControllers count], contador);
 }
 
 -(void)previous:(id)sender{
@@ -117,18 +117,64 @@ static int contador=0;
         [views insertObject:proximo atIndex:0];
         self.navigationController.viewControllers = views;
     }
-//    NSLog(@"%lu %d",[self.navigationController.viewControllers count], contador);
     
     [self.navigationController popViewControllerAnimated:YES];
-//    NSLog(@"%lu %d",[self.navigationController.viewControllers count], contador);
 }
 
 -(void)trocarPalavra{
     label.text = textField.text;
-    NSLog(@"%@",[abc.palavras objectAtIndex: contador]);
     [abc.palavras removeObjectAtIndex:contador];
     [abc.palavras insertObject:textField.text atIndex:contador];
     textField.text = @"";
+}
+
+static float oldX, oldY;
+static BOOL dragging;
+static int contTouch=0;
+
+- (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event {
+    
+    UITouch *touch = [[event allTouches] anyObject];
+    CGPoint touchLocation = [touch locationInView:self.view];
+
+    if (CGRectContainsPoint(imagem.frame, touchLocation)) {
+        dragging = YES;
+    }
+}
+
+- (void)touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event {
+    dragging = NO;
+    contTouch++;
+}
+
+- (void)touchesMoved:(NSSet *)touches withEvent:(UIEvent *)event {
+    
+    UITouch *touch = [[event allTouches] anyObject];
+    CGPoint touchLocation = [touch locationInView:self.view];
+    
+
+        
+        if (dragging) {
+            CGRect frame = imagem.frame;
+            frame.origin.y = touchLocation.y;
+            imagem.frame = frame;
+            
+            if (frame.origin.y <= label.frame.origin.y && contTouch%2==0) {
+                frame.origin.y += imagem.frame.origin.y + 40;
+                frame.origin.x = label.frame.origin.x;
+                label.frame = frame;
+            }
+            
+            if (frame.origin.y >= label.frame.origin.y && contTouch %2!= 0) {
+                frame.origin.y -= imagem.frame.origin.y - 40;
+                frame.origin.x = label.frame.origin.x;
+                label.frame = frame;
+            }
+        }
+        
+    
+    
+    
 }
 
 /*
