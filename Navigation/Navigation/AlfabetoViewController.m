@@ -139,12 +139,33 @@ static int contTouch=0;
 
     if (CGRectContainsPoint(imagem.frame, touchLocation)) {
         dragging = YES;
+    [UIView animateWithDuration:0.5
+                          delay:0
+                        options:UIViewAnimationOptionCurveLinear
+                     animations:^ {
+                         
+                         imagem.transform = CGAffineTransformMakeScale(1.2, 1.2);
+                         
+                     }completion:^(BOOL finished) {
+                         
+                     }];
     }
+    
 }
 
 - (void)touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event {
     dragging = NO;
     contTouch++;
+    [UIView animateWithDuration:0.5
+                          delay:0
+                        options:UIViewAnimationOptionCurveLinear
+                     animations:^ {
+                         
+                         imagem.transform = CGAffineTransformMakeScale(1, 1);
+                         
+                     }completion:^(BOOL finished) {
+                         
+                     }];
 }
 
 - (void)touchesMoved:(NSSet *)touches withEvent:(UIEvent *)event {
