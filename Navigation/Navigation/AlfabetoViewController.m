@@ -47,6 +47,7 @@ static int contador=0;
 }
 
 -(void) viewWillAppear:(BOOL)animated {
+    self.title = abc.letras[contador];
     self.label.text = abc.palavras[contador];
     self.label.hidden = false;
 

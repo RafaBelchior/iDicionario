@@ -8,17 +8,29 @@
 
 #import "MackenzieAppDelegate.h"
 #import "AlfabetoViewController.h"
+#import "DetailTableViewController.h"
 
 @implementation MackenzieAppDelegate
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
     AlfabetoViewController *aVC = [[AlfabetoViewController alloc] init];
+    DetailTableViewController *dTVC = [[DetailTableViewController alloc] init];
     
     self.navigationController = [[UINavigationController alloc] initWithRootViewController:aVC];
     
+    UITabBarController * tbC = [[UITabBarController alloc] init];
+    
+    tbC.tabBarItem = [[UITabBarItem alloc] initWithTabBarSystemItem:UITabBarSystemItemMostViewed tag:0];
+    tbC.tabBarItem = [[UITabBarItem alloc] initWithTabBarSystemItem:UITabBarSystemItemMostRecent tag:1];
+    
+    tbC.viewControllers = @[self.navigationController, dTVC];
+    self.navigationController.tabBarItem.title = @"Dictionary";
+    self.navigationController.tabBarItem.image = [UIImage imageNamed:@"alpha.png"];
+    dTVC.tabBarItem.title = @"Alphabeat";
+    dTVC.tabBarItem.image = [UIImage imageNamed:@"alpha.png"];
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
-    self.window.rootViewController = self.navigationController;
+    self.window.rootViewController = tbC;
     self.window.backgroundColor = [UIColor whiteColor];
     [self.window makeKeyAndVisible];
     
