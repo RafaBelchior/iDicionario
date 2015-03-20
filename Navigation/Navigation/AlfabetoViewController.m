@@ -13,10 +13,11 @@
 @property Alfabeto *abc;
 @property UILabel *label;
 @property UIImageView *imagem;
+@property UITextField *textField;
 @end
 
 @implementation AlfabetoViewController
-@synthesize abc, label, imagem;
+@synthesize abc, label, imagem, textField;
 
 static int contador=0;
 
@@ -24,7 +25,7 @@ static int contador=0;
     [super viewDidLoad];
     // Do any additional setup after loading the view.
     abc = [Alfabeto instance];
-    abc = [abc initWithLetras];
+//    abc = [abc initWithLetras];
     
     UIBarButtonItem *next = [[UIBarButtonItem alloc] initWithBarButtonSystemItem: UIBarButtonSystemItemFastForward target:self action:@selector(next:)];
     self.navigationItem.rightBarButtonItem = next;
@@ -39,6 +40,20 @@ static int contador=0;
     self.imagem.image = [UIImage imageNamed:@"alpha.png"];
     [self.view addSubview:self.imagem];
     
+    UIToolbar *toolBar = [[UIToolbar alloc] initWithFrame:CGRectMake(0, 60, self.view.bounds.size.width, 50)];
+    [toolBar setBackgroundColor:[UIColor blackColor]];
+    [self.view addSubview:toolBar];
+    
+    textField = [[UITextField alloc] init];
+    textField = [[UITextField alloc] initWithFrame:CGRectMake(0, 0, 250, 25)];
+    textField.borderStyle = UITextBorderStyleRoundedRect;
+    textField.placeholder = @"Alterar palavra";
+    textField.returnKeyType = UIReturnKeyDone;
+    textField.clearButtonMode = UITextFieldViewModeWhileEditing;
+    
+    UIBarButtonItem *textFieldBarButton = [[UIBarButtonItem alloc] initWithCustomView:textField];
+    UIBarButtonItem *buttonBarButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem: UIBarButtonSystemItemSave target:self action:@selector(trocarPalavra)];
+    [toolBar setItems:@[textFieldBarButton, buttonBarButton]];
 }
 
 -(void) viewWillDisappear:(BOOL)animated{
@@ -50,7 +65,7 @@ static int contador=0;
     self.title = abc.letras[contador];
     self.label.text = abc.palavras[contador];
     self.label.hidden = false;
-
+    self.textField.text = @"";
 }
 
 -(void) viewDidAppear:(BOOL)animated{
@@ -106,6 +121,14 @@ static int contador=0;
     
     [self.navigationController popViewControllerAnimated:YES];
 //    NSLog(@"%lu %d",[self.navigationController.viewControllers count], contador);
+}
+
+-(void)trocarPalavra{
+    label.text = textField.text;
+    NSLog(@"%@",[abc.palavras objectAtIndex: contador]);
+    [abc.palavras removeObjectAtIndex:contador];
+    [abc.palavras insertObject:textField.text atIndex:contador];
+    textField.text = @"";
 }
 
 /*
