@@ -21,9 +21,6 @@
     
     UITabBarController * tbC = [[UITabBarController alloc] init];
     
-    tbC.tabBarItem = [[UITabBarItem alloc] initWithTabBarSystemItem:UITabBarSystemItemMostViewed tag:0];
-    tbC.tabBarItem = [[UITabBarItem alloc] initWithTabBarSystemItem:UITabBarSystemItemMostRecent tag:1];
-    
     tbC.viewControllers = @[self.navigationController, dTVC];
     self.navigationController.tabBarItem.title = @"Dictionary";
     self.navigationController.tabBarItem.image = [UIImage imageNamed:@"alpha.png"];
@@ -64,5 +61,6 @@
 {
     // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
 }
+
 
 @end

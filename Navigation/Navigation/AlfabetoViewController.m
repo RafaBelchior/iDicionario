@@ -25,7 +25,6 @@ static int contador=0;
     [super viewDidLoad];
     // Do any additional setup after loading the view.
     abc = [Alfabeto instance];
-//    abc = [abc initWithLetras];
     
     UIBarButtonItem *next = [[UIBarButtonItem alloc] initWithBarButtonSystemItem: UIBarButtonSystemItemFastForward target:self action:@selector(next:)];
     self.navigationItem.rightBarButtonItem = next;
@@ -35,14 +34,13 @@ static int contador=0;
     self.label = [[UILabel alloc] initWithFrame:CGRectMake(100, self.view.center.y-130, self.view.bounds.size.width, 80)];
     self.label.text = abc.palavras[contador];
     [self.view addSubview:self.label];
-    
     self.imagem = [[UIImageView alloc] initWithFrame:CGRectMake(0,self.view.center.y-70, self.view.bounds.size.width, 250)];
-    self.imagem.image = [UIImage imageNamed:@"alpha.png"];
-    self.imagem.backgroundColor = [UIColor blueColor];
+    self.imagem.image = [UIImage imageNamed:[NSString stringWithFormat:@"%@.png",self.abc.letras[contador]]];
     [self.view addSubview:self.imagem];
+    [self.imagem setAlpha:1];
     
     UIToolbar *toolBar = [[UIToolbar alloc] initWithFrame:CGRectMake(0, 60, self.view.bounds.size.width, 50)];
-    [toolBar setBackgroundColor:[UIColor blackColor]];
+    [toolBar setBackgroundColor:[UIColor blueColor]];
     [self.view addSubview:toolBar];
     
     textField = [[UITextField alloc] init];
@@ -62,11 +60,14 @@ static int contador=0;
     self.imagem.hidden = true;
 }
 
+
 -(void) viewWillAppear:(BOOL)animated {
     self.title = abc.letras[contador];
     self.label.text = abc.palavras[contador];
     self.label.hidden = false;
     self.textField.text = @"";
+    self.imagem.image = [UIImage imageNamed:[NSString stringWithFormat:@"%@.png",self.abc.letras[contador]]];
+    self.imagem.hidden = false;
 }
 
 -(void) viewDidAppear:(BOOL)animated{
@@ -79,12 +80,15 @@ static int contador=0;
     }];
 }
 
+
+
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
 
 -(void)next:(id)sender {
+//    contTouch = 0;
     contador++;
     if (contador == 26) {
         contador = 0;
@@ -105,11 +109,11 @@ static int contador=0;
 }
 
 -(void)previous:(id)sender{
+//    contTouch = 0;
     contador--;
     if (contador == -1) {
         contador = 25;
     }
-    //Chega a 4 controllers!!
     AlfabetoViewController *proximo;
     if ([self.navigationController.viewControllers count] >=3) {
         NSMutableArray *views = [[NSMutableArray alloc] initWithArray:self.navigationController.viewControllers];
@@ -122,21 +126,21 @@ static int contador=0;
 }
 
 -(void)trocarPalavra{
-    label.text = textField.text;
-    [abc.palavras removeObjectAtIndex:contador];
-    [abc.palavras insertObject:textField.text atIndex:contador];
-    textField.text = @"";
+    if ([self validateTextField:textField.text]){
+        label.text = textField.text;
+        [abc.palavras removeObjectAtIndex:contador];
+        [abc.palavras insertObject:textField.text atIndex:contador];
+        textField.text = @"";
+    }
 }
 
-static float oldX, oldY;
 static BOOL dragging;
-static int contTouch=0;
+//static int contTouch=0;
 
 - (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event {
-    
+    [self.textField resignFirstResponder];
     UITouch *touch = [[event allTouches] anyObject];
     CGPoint touchLocation = [touch locationInView:self.view];
-
     if (CGRectContainsPoint(imagem.frame, touchLocation)) {
         dragging = YES;
     [UIView animateWithDuration:0.5
@@ -155,7 +159,8 @@ static int contTouch=0;
 
 - (void)touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event {
     dragging = NO;
-    contTouch++;
+//    contTouch++;
+    
     [UIView animateWithDuration:0.5
                           delay:0
                         options:UIViewAnimationOptionCurveLinear
@@ -172,30 +177,34 @@ static int contTouch=0;
     
     UITouch *touch = [[event allTouches] anyObject];
     CGPoint touchLocation = [touch locationInView:self.view];
-    
-
-        
         if (dragging) {
-            CGRect frame = imagem.frame;
-            frame.origin.y = touchLocation.y;
-            imagem.frame = frame;
+            imagem.center = touchLocation;
             
-            if (frame.origin.y <= label.frame.origin.y && contTouch%2==0) {
-                frame.origin.y += imagem.frame.origin.y + 40;
-                frame.origin.x = label.frame.origin.x;
-                label.frame = frame;
-            }
-            
-            if (frame.origin.y >= label.frame.origin.y && contTouch %2!= 0) {
-                frame.origin.y -= imagem.frame.origin.y - 40;
-                frame.origin.x = label.frame.origin.x;
-                label.frame = frame;
-            }
+//            if (frame.origin.y <= label.frame.origin.y) {
+//                frame.origin.y += imagem.frame.origin.y + 40;
+//                frame.origin.x = label.frame.origin.x;
+//                label.frame = frame;
+//            }
+//            
+//            if (frame.origin.y > label.frame.origin.y) {
+//                frame.origin.y -= imagem.frame.origin.y - 40;
+//                frame.origin.x = label.frame.origin.x;
+//                label.frame = frame;
+//            }
         }
         
     
     
     
+}
+
+-(BOOL) validateTextField:(NSString *)termo{
+    //Implementar RegEx;
+    NSError *error;
+    NSRegularExpression *regex = [NSRegularExpression regularExpressionWithPattern:@"^[A-Z0-9a-z]{1,100}$" options:NSRegularExpressionCaseInsensitive error:&error];
+    NSTextCheckingResult *match = [regex firstMatchInString:termo options:0 range:NSMakeRange(0, [termo length])];
+    
+    return match;
 }
 
 /*
